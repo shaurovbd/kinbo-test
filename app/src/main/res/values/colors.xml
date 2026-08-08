@@ -1,0 +1,6 @@
+<resources>
+    <color name="kinbo_primary">#00A86B</color>
+    <color name="kinbo_primary_dark">#00784E</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>

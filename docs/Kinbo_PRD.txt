@@ -1,0 +1,436 @@
+# Product Requirements Document (PRD)
+
+**Product Name:** Kinbo
+
+**Version:** v1.0 MVP
+
+**Author:** Product Team
+
+**Status:** Draft
+
+---
+
+# 1. Product Vision
+
+Kinbo is an AI-powered collaborative shopping list and household planning platform that makes grocery shopping simple, organized, and enjoyable.
+
+Instead of sending shopping lists through WhatsApp or remembering items mentally, families can create shared shopping lists, collaborate in real time, receive AI recommendations, track budgets, and complete shopping faster.
+
+---
+
+# 2. Problem Statement
+
+People experience several common problems:
+
+* Shopping lists become outdated.
+* Family members buy duplicate items.
+* Important items are forgotten.
+* Grocery budgets are exceeded.
+* Communication through messaging apps is messy.
+* No intelligent shopping assistant exists for everyday households.
+
+Kinbo solves these problems through real-time collaboration and AI.
+
+---
+
+# 3. Target Users
+
+### Primary
+
+* Families
+* Couples
+* Roommates
+
+### Secondary
+
+* Small businesses
+* Restaurants
+* Student apartments
+* Office pantry managers
+
+---
+
+# 4. Goals
+
+### User Goals
+
+* Never forget grocery items
+* Shop together
+* Save money
+* Save time
+
+### Business Goals
+
+* Reach 100K users
+* Premium subscriptions
+* Grocery partnerships
+* Affiliate revenue
+* AI shopping assistant
+
+---
+
+# 5. Platforms
+
+* Android
+* iOS
+* Web Dashboard (future)
+
+---
+
+# 6. Core Features
+
+## Authentication
+
+* Email Login
+* Google Login
+* Apple Login
+* Guest Mode
+
+---
+
+## Home Dashboard
+
+Displays
+
+* Active Lists
+* Recent Lists
+* Budget Overview
+* Shopping Progress
+
+---
+
+## Shopping Lists
+
+Users can
+
+* Create List
+* Rename
+* Archive
+* Delete
+* Duplicate
+* Favorite
+
+Each list contains
+
+* Items
+* Quantity
+* Unit
+* Notes
+* Price
+* Category
+* Priority
+
+---
+
+## Shared Lists
+
+Invite users by
+
+* Link
+* QR Code
+* Contact
+
+Permissions
+
+* Owner
+* Editor
+* Viewer
+
+Real-time synchronization.
+
+---
+
+## AI Shopping Assistant
+
+Features
+
+* Suggest forgotten groceries
+* Recommend recipes
+* Estimate total bill
+* Detect duplicate items
+* Seasonal recommendations
+* Smart category sorting
+* Shopping optimization
+
+Example
+
+User types:
+
+> Chicken
+
+AI suggests
+
+* Onion
+* Garlic
+* Ginger
+* Cooking Oil
+* Chili
+* Rice
+
+---
+
+## Voice Input
+
+User speaks
+
+> Add two bottles of milk
+
+AI converts directly into list items.
+
+---
+
+## Barcode Scanner
+
+Scan products to
+
+* Add quickly
+* Save product history
+* Autofill details
+
+---
+
+## Budget Planner
+
+User sets
+
+Monthly grocery budget
+
+Kinbo tracks
+
+* Total spent
+* Remaining budget
+* Average cost
+* Price history
+
+---
+
+## Expense Analytics
+
+Charts
+
+* Weekly spending
+* Monthly spending
+* Category breakdown
+
+---
+
+## Smart Notifications
+
+Examples
+
+* Milk running low
+* Shopping reminder
+* Shared list updated
+* Budget exceeded
+
+---
+
+## Offline Mode
+
+Users can
+
+* View lists
+* Edit lists
+
+Sync automatically when online.
+
+---
+
+## Favorites
+
+Save
+
+* Weekly groceries
+* Monthly groceries
+* Ramadan list
+* Party list
+
+---
+
+## PDF Export
+
+Export shopping lists
+
+* PDF
+* Print
+
+---
+
+## Search
+
+Global search
+
+Search by
+
+* Item
+* Category
+* Store
+
+---
+
+## Dark Mode
+
+Support
+
+* Light
+* Dark
+* System
+
+---
+
+# 7. User Flow
+
+```
+Open App
+
+↓
+
+Login
+
+↓
+
+Home
+
+↓
+
+Create List
+
+↓
+
+Add Items
+
+↓
+
+Share List
+
+↓
+
+Collaborate
+
+↓
+
+Go Shopping
+
+↓
+
+Mark Purchased
+
+↓
+
+View Spending Analytics
+```
+
+---
+
+# 8. Screens
+
+1. Splash
+2. Onboarding
+3. Login
+4. Signup
+5. Home
+6. Shopping List
+7. Add Item
+8. AI Assistant
+9. Budget
+10. Analytics
+11. Notifications
+12. Settings
+13. Profile
+
+---
+
+# 9. Firebase Structure
+
+Collections
+
+```
+users/
+
+shopping_lists/
+
+shopping_items/
+
+invitations/
+
+budgets/
+
+expenses/
+
+notifications/
+
+favorites/
+
+analytics/
+```
+
+---
+
+# 10. Non-Functional Requirements
+
+Performance
+
+* Load under 2 seconds
+* Real-time sync under 500 ms
+* Offline-first
+
+Security
+
+* Firebase Authentication
+* Firestore Security Rules
+* Encrypted data in transit
+
+Scalability
+
+* Support 1M+ users
+* Multi-device sync
+
+---
+
+# 11. Success Metrics
+
+* Daily Active Users (DAU)
+* Monthly Active Users (MAU)
+* Lists created per user
+* Items completed
+* Retention (30-day)
+* Premium conversion
+* AI feature usage
+* Shared list adoption
+
+---
+
+# 12. Monetization
+
+### Free
+
+* Unlimited personal lists
+* Basic sharing
+* Basic AI suggestions
+
+### Premium
+
+* Advanced AI shopping assistant
+* Unlimited collaborators
+* Expense analytics
+* Smart budgeting
+* Family dashboard
+* Recipe planning
+* PDF exports
+* Priority support
+
+---
+
+# 13. Future Roadmap
+
+### V2
+
+* OCR receipt scanning
+* Price comparison across supermarkets
+* Store maps
+* Meal planner
+* Pantry inventory
+* Auto-generated grocery lists
+* Smart home integrations
+* AI nutrition coach
+* Family consumption predictions
