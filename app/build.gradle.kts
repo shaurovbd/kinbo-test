@@ -18,10 +18,25 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    // Stable signing key — same across all builds and environments so APKs update
+    // in place without uninstalling. Keystore is NOT committed (see .gitignore).
+    signingConfigs {
+        create("kinbo") {
+            storeFile = file("kinbo-release.keystore")
+            storePassword = "kinbo2024"
+            keyAlias = "kinbo"
+            keyPassword = "kinbo2024"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("kinbo")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("kinbo")
         }
     }
 
