@@ -4,12 +4,12 @@ Kinbo — AI-powered collaborative shopping list and household planning app.
 Built with Kotlin + Jetpack Compose based on the Kinbo PRD (v1.0 MVP).
 
 ## Build
-Requires JDK 17+ (built/tested with JDK 21) and Android SDK (compileSdk 34, build-tools 34.0.0).
+Requires JDK 26+ (built/tested with Temurin 26.0.2) and Android SDK (compileSdk 34, build-tools 34.0.0).
 
 ```bash
 # Set environment (adjust paths as needed)
-export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-export ANDROID_HOME=/opt/android-sdk
+export JAVA_HOME=/opt/jdk26           # JDK 26 (Temurin)
+export ANDROID_HOME=$HOME/android-sdk
 export PATH=$JAVA_HOME/bin:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
 ./gradlew assembleDebug
