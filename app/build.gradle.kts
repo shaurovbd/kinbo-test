@@ -85,6 +85,7 @@ dependencies {
     implementation("androidx.camera:camera-view:1.3.4")
     implementation("com.google.mlkit:text-recognition:16.0.1")
     implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.guava:guava:32.1.3-android")
 
     testImplementation("junit:junit:4.13.2")

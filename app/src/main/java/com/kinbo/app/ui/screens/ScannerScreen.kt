@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.kinbo.app.R
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.model.ShoppingItem
 import java.util.concurrent.Executors
@@ -75,7 +77,7 @@ fun ScannerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Scan text") },
+                title = { Text(stringResource(R.string.scan_text)) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back") } },
             )
         },
@@ -152,19 +154,19 @@ fun ScannerScreen(
                 ) {
                     Icon(Icons.Rounded.DocumentScanner, null, Modifier.size(64.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(12.dp))
-                    Text("Camera permission needed to scan text", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.camera_permission_text), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(16.dp))
                     Button(onClick = { permissionLauncher.launch(Manifest.permission.CAMERA) }) {
-                        Text("Grant camera access")
+                        Text(stringResource(R.string.grant_camera_access))
                     }
                 }
             }
 
             Column(Modifier.padding(horizontal = 16.dp)) {
-                Text("Add to list", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(stringResource(R.string.add_to_list), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "Point the camera at a product name or label",
+                    stringResource(R.string.point_at_label),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -173,7 +175,7 @@ fun ScannerScreen(
                 OutlinedTextField(
                     value = manualName,
                     onValueChange = { manualName = it; addedItem = null },
-                    label = { Text("Item name") },
+                    label = { Text(stringResource(R.string.item_name)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                     trailingIcon = {
@@ -196,9 +198,9 @@ fun ScannerScreen(
                         },
                         enabled = manualName.isNotBlank(),
                         modifier = Modifier.weight(1f),
-                    ) { Text("Add to list") }
+                    ) { Text(stringResource(R.string.add_to_list)) }
                     if (addedItem != null) {
-                        TextButton(onClick = onBack) { Text("Done") }
+                        TextButton(onClick = onBack) { Text(stringResource(R.string.done)) }
                     }
                 }
 
@@ -213,7 +215,7 @@ fun ScannerScreen(
 
                 if (detected.isNotEmpty()) {
                     Spacer(Modifier.height(16.dp))
-                    Text("Recent scans", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.recent_scans), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(8.dp))
                     detected.forEach { code ->
                         AssistChip(

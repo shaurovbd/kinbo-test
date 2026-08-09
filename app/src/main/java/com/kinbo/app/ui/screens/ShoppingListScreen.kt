@@ -18,8 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.kinbo.app.R
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.model.ShoppingItem
+import com.kinbo.app.util.CurrencyFormatter
 import com.kinbo.app.ui.components.AvatarPile
 import com.kinbo.app.ui.components.CategoryDot
 import com.kinbo.app.ui.components.ProgressRing
@@ -52,28 +55,28 @@ fun ShoppingListScreen(
         topBar = {
             TopAppBar(
                 title = { Text(list.name, maxLines = 1) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back") } },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.back)) } },
                 actions = {
                     IconButton(onClick = { vm.toggleFavorite(list.id) }) {
-                        Icon(if (list.favorite) Icons.Rounded.Star else Icons.Rounded.StarBorder, contentDescription = "Favorite", tint = if (list.favorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface)
+                        Icon(if (list.favorite) Icons.Rounded.Star else Icons.Rounded.StarBorder, contentDescription = stringResource(R.string.favorite), tint = if (list.favorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface)
                     }
-                    IconButton(onClick = { onShare(list) }) { Icon(Icons.Rounded.Share, contentDescription = "Share") }
-                    IconButton(onClick = onCollab) { Icon(Icons.Rounded.Group, contentDescription = "Collaborators") }
-                    IconButton(onClick = { menuOpen = true }) { Icon(Icons.Rounded.MoreVert, contentDescription = "More") }
+                    IconButton(onClick = { onShare(list) }) { Icon(Icons.Rounded.Share, contentDescription = stringResource(R.string.share)) }
+                    IconButton(onClick = onCollab) { Icon(Icons.Rounded.Group, contentDescription = stringResource(R.string.collaborators)) }
+                    IconButton(onClick = { menuOpen = true }) { Icon(Icons.Rounded.MoreVert, contentDescription = null) }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                        DropdownMenuItem(text = { Text("Rename") }, onClick = { menuOpen = false; renameOpen = true; renameText = list.name }, leadingIcon = { Icon(Icons.Rounded.Edit, null) })
-                        DropdownMenuItem(text = { Text("Share list") }, onClick = { menuOpen = false; onShare(list) }, leadingIcon = { Icon(Icons.Rounded.Share, null) })
-                        DropdownMenuItem(text = { Text("Collaborators") }, onClick = { menuOpen = false; onCollab() }, leadingIcon = { Icon(Icons.Rounded.Group, null) })
-                        DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menuOpen = false; vm.duplicateList(list.id) }, leadingIcon = { Icon(Icons.Rounded.ContentCopy, null) })
-                        DropdownMenuItem(text = { Text("Sort by category") }, onClick = { menuOpen = false; vm.sortItemsByCategory(list.id) }, leadingIcon = { Icon(Icons.Rounded.Sort, null) })
-                        DropdownMenuItem(text = { Text("Archive") }, onClick = { menuOpen = false; vm.archiveList(list.id); onBack() }, leadingIcon = { Icon(Icons.Rounded.Archive, null) })
-                        DropdownMenuItem(text = { Text("Delete") }, colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.error), onClick = { menuOpen = false; vm.deleteList(list.id); onBack() }, leadingIcon = { Icon(Icons.Rounded.Delete, null, tint = MaterialTheme.colorScheme.error) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.rename)) }, onClick = { menuOpen = false; renameOpen = true; renameText = list.name }, leadingIcon = { Icon(Icons.Rounded.Edit, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.share_list)) }, onClick = { menuOpen = false; onShare(list) }, leadingIcon = { Icon(Icons.Rounded.Share, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.collaborators)) }, onClick = { menuOpen = false; onCollab() }, leadingIcon = { Icon(Icons.Rounded.Group, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.duplicate)) }, onClick = { menuOpen = false; vm.duplicateList(list.id) }, leadingIcon = { Icon(Icons.Rounded.ContentCopy, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.sort_by_category)) }, onClick = { menuOpen = false; vm.sortItemsByCategory(list.id) }, leadingIcon = { Icon(Icons.Rounded.Sort, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.archive)) }, onClick = { menuOpen = false; vm.archiveList(list.id); onBack() }, leadingIcon = { Icon(Icons.Rounded.Archive, null) })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.delete)) }, colors = MenuDefaults.itemColors(textColor = MaterialTheme.colorScheme.error), onClick = { menuOpen = false; vm.deleteList(list.id); onBack() }, leadingIcon = { Icon(Icons.Rounded.Delete, null, tint = MaterialTheme.colorScheme.error) })
                     }
                 },
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = onAddItem, icon = { Icon(Icons.Rounded.Add, null) }, text = { Text("Add Item") })
+            ExtendedFloatingActionButton(onClick = onAddItem, icon = { Icon(Icons.Rounded.Add, null) }, text = { Text(stringResource(R.string.add_item)) })
         },
     ) { inner ->
         Column(modifier = Modifier.fillMaxSize().padding(inner).background(MaterialTheme.colorScheme.background)) {
@@ -82,9 +85,9 @@ fun ShoppingListScreen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                AssistChip(onClick = onAI, leadingIcon = { Icon(Icons.Rounded.AutoAwesome, null, modifier = Modifier.size(16.dp)) }, label = { Text("AI Suggestions") })
-                AssistChip(onClick = onScan, leadingIcon = { Icon(Icons.Rounded.DocumentScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text("Scan") })
-                AssistChip(onClick = {}, leadingIcon = { Icon(Icons.Rounded.PictureAsPdf, null, modifier = Modifier.size(16.dp)) }, label = { Text("PDF") })
+                AssistChip(onClick = onAI, leadingIcon = { Icon(Icons.Rounded.AutoAwesome, null, modifier = Modifier.size(16.dp)) }, label = { Text(stringResource(R.string.ai_suggestions)) })
+                AssistChip(onClick = onScan, leadingIcon = { Icon(Icons.Rounded.DocumentScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text(stringResource(R.string.scan)) })
+                AssistChip(onClick = {}, leadingIcon = { Icon(Icons.Rounded.PictureAsPdf, null, modifier = Modifier.size(16.dp)) }, label = { Text(stringResource(R.string.pdf)) })
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -101,10 +104,10 @@ fun ShoppingListScreen(
     if (renameOpen) {
         AlertDialog(
             onDismissRequest = { renameOpen = false },
-            title = { Text("Rename list") },
-            text = { OutlinedTextField(value = renameText, onValueChange = { renameText = it }, singleLine = true, label = { Text("Name") }) },
-            confirmButton = { TextButton(onClick = { if (renameText.isNotBlank()) vm.renameList(list.id, renameText); renameOpen = false }) { Text("Save") } },
-            dismissButton = { TextButton(onClick = { renameOpen = false }) { Text("Cancel") } },
+            title = { Text(stringResource(R.string.rename_list)) },
+            text = { OutlinedTextField(value = renameText, onValueChange = { renameText = it }, singleLine = true, label = { Text(stringResource(R.string.list_name)) }) },
+            confirmButton = { TextButton(onClick = { if (renameText.isNotBlank()) vm.renameList(list.id, renameText); renameOpen = false }) { Text(stringResource(R.string.save)) } },
+            dismissButton = { TextButton(onClick = { renameOpen = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
 }
@@ -120,8 +123,8 @@ private fun ListSummaryHeader(list: com.kinbo.app.model.ShoppingList) {
             ProgressRing(progress = list.progress, size = 60, stroke = 7)
             Spacer(Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text("${list.purchasedCount} of ${list.totalItems} purchased", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
-                Text("Estimated $${"%.2f".format(list.estimatedTotal)}", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f))
+                Text(stringResource(R.string.purchased_of, list.purchasedCount, list.totalItems), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Text(stringResource(R.string.estimated_total, CurrencyFormatter.format(list.estimatedTotal)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f))
                 Spacer(Modifier.height(8.dp))
                 AvatarPile(initials = list.collaborators.map { it.initials })
             }
@@ -146,7 +149,7 @@ private fun ItemRow(item: ShoppingItem, onToggle: () -> Unit, onDelete: () -> Un
                 Text(item.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, textDecoration = strikethrough, color = MaterialTheme.colorScheme.onSurface.copy(alpha = alpha))
             }
             Text(
-                "${formatQty(item.quantity)} ${item.unit} · ${item.category.displayName} · $${"%.2f".format(item.price * item.quantity)}",
+                "${formatQty(item.quantity)} ${item.unit} · ${item.category.displayName} · ${CurrencyFormatter.format(item.price * item.quantity)}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textDecoration = strikethrough,

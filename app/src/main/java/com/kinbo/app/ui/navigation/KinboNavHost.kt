@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.data.ListShare
 import com.kinbo.app.ui.screens.*
@@ -34,6 +35,7 @@ fun KinboNavHost(vm: KinboViewModel) {
                 NavigationBar {
                     BottomTab.entries.forEach { tab ->
                         val selected = current?.hierarchy?.any { it.route == tab.route } == true
+                        val label = stringResource(tab.labelRes)
                         NavigationBarItem(
                             selected = selected,
                             onClick = {
@@ -43,8 +45,8 @@ fun KinboNavHost(vm: KinboViewModel) {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(if (selected) tab.selectedIcon else tab.icon, contentDescription = tab.label) },
-                            label = { Text(tab.label) },
+                            icon = { Icon(if (selected) tab.selectedIcon else tab.icon, contentDescription = label) },
+                            label = { Text(label) },
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 indicatorColor = MaterialTheme.colorScheme.primaryContainer,

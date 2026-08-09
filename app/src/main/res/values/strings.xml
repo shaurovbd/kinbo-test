@@ -1,3 +1,180 @@
 <resources>
     <string name="app_name">Kinbo</string>
+
+    <!-- Common -->
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="done">Done</string>
+    <string name="copy">Copy</string>
+    <string name="new_label">New</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+    <string name="see_all">See all</string>
+    <string name="share">Share</string>
+    <string name="favorite">Favorite</string>
+    <string name="details">Details</string>
+    <string name="scan">Scan</string>
+    <string name="voice">Voice</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="close">Close</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_ai">AI</string>
+    <string name="nav_budget">Budget</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_shared_lists">Shared Shopping Lists</string>
+    <string name="onboarding_shared_lists_desc">Create lists your whole family can edit in real time. No more duplicate groceries or forgotten items.</string>
+    <string name="onboarding_ai">AI Shopping Assistant</string>
+    <string name="onboarding_ai_desc">Type \'Chicken\' and Kinbo suggests onion, garlic, ginger and more — so you never miss an ingredient.</string>
+    <string name="onboarding_budget">Budget &amp; Analytics</string>
+    <string name="onboarding_budget_desc">Set a monthly grocery budget, track spending, and see where your money goes with smart charts.</string>
+    <string name="onboarding_offline">Offline-First &amp; Private</string>
+    <string name="onboarding_offline_desc">Edit lists anywhere — even offline. Changes sync the moment you\'re back online.</string>
+
+    <!-- Auth -->
+    <string name="login_welcome_back">Welcome back</string>
+    <string name="login_subtitle">Sign in to keep your lists in sync</string>
+    <string name="login_signup_subtitle">Start shopping smarter together</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="create_account">Create account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+    <string name="have_account">Already have an account? </string>
+    <string name="no_account">Don\'t have an account? </string>
+    <string name="google">Google</string>
+    <string name="apple">Apple</string>
+
+    <!-- Home -->
+    <string name="good_day">Good day 👋</string>
+    <string name="shopping_progress">Shopping Progress</string>
+    <string name="active_lists">Active Lists</string>
+    <string name="no_active_lists">No active lists — you\'re all caught up! 🎉</string>
+    <string name="recent_lists">Recent Lists</string>
+    <string name="new_list">New List</string>
+    <string name="budget_overview">Budget Overview</string>
+    <string name="this_month">This month</string>
+    <string name="on_track">On track</string>
+    <string name="over_budget">Over budget</string>
+    <string name="active_lists_count">%1$d active lists</string>
+    <string name="items_count">%1$d items</string>
+    <string name="progress_complete">%1$d%% complete</string>
+
+    <!-- Shopping List -->
+    <string name="add_item">Add Item</string>
+    <string name="ai_suggestions">AI Suggestions</string>
+    <string name="collaborators">Collaborators</string>
+    <string name="share_list">Share list</string>
+    <string name="rename_list">Rename list</string>
+    <string name="archive">Archive</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="list_not_found">List not found</string>
+    <string name="sort_by_category">Sort by category</string>
+    <string name="pdf">PDF</string>
+    <string name="purchased_of">%1$d of %2$d purchased</string>
+    <string name="estimated_total">Estimated %1$s</string>
+
+    <!-- Add Item -->
+    <string name="item_name">Item name</string>
+    <string name="qty">Qty</string>
+    <string name="price">Price</string>
+    <string name="note_optional">Note (optional)</string>
+
+    <!-- Create List -->
+    <string name="list_name">List name</string>
+    <string name="eg_weekly_groceries">e.g. Weekly Groceries</string>
+    <string name="eg_chicken">e.g. Chicken</string>
+
+    <!-- Budget -->
+    <string name="budget_planner">Budget Planner</string>
+    <string name="set_monthly_budget">Set monthly budget</string>
+    <string name="spent">Spent</string>
+    <string name="remaining">Remaining</string>
+    <string name="avg_per_visit">Avg/visit</string>
+    <string name="of_budget">of %1$s budget</string>
+
+    <!-- Analytics -->
+    <string name="expense_analytics">Expense Analytics</string>
+    <string name="total_spent">Total spent</string>
+    <string name="this_week">This week</string>
+
+    <!-- AI Assistant -->
+    <string name="ai_assistant">AI Assistant</string>
+    <string name="try_chicken_pasta">Try \'Chicken\' or \'Pasta\'</string>
+    <string name="send">Send</string>
+
+    <!-- Scanner -->
+    <string name="scan_text">Scan text</string>
+    <string name="add_to_list">Add to list</string>
+    <string name="grant_camera_access">Grant camera access</string>
+    <string name="camera_permission_text">Camera permission needed to scan text</string>
+    <string name="point_at_label">Point the camera at a product name or label</string>
+    <string name="recent_scans">Recent scans</string>
+
+    <!-- Collaborators -->
+    <string name="enter_code">Enter 6-digit code</string>
+    <string name="join_list">Join list</string>
+    <string name="send_invite">Send invite</string>
+    <string name="editor_role">Editor — can edit items</string>
+    <string name="viewer_role">Viewer — read only</string>
+
+    <!-- Notifications -->
+    <string name="mark_all_read">Mark all read</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="subscription">Subscription</string>
+    <string name="kinbo_premium">Kinbo Premium</string>
+    <string name="premium_unlock">Unlock advanced AI, analytics &amp; PDF export</string>
+    <string name="active">Active</string>
+    <string name="preferences">Preferences</string>
+    <string name="smart_notifications">Smart notifications</string>
+    <string name="offline_mode">Offline mode</string>
+    <string name="auto_sync">Auto-sync</string>
+    <string name="language">Language</string>
+    <string name="default_currency">Default currency</string>
+    <string name="data">Data</string>
+    <string name="export_pdf">Export lists (PDF)</string>
+    <string name="backup_cloud">Backup to cloud</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="about">About</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="rate_kinbo">Rate Kinbo</string>
+    <string name="version_mvp">Kinbo v1.0.0 MVP</string>
+
+    <!-- Profile -->
+    <string name="lists">Lists</string>
+    <string name="items">Items</string>
+    <string name="bought">Bought</string>
+
+    <!-- Item categories -->
+    <string name="cat_produce">Fruits &amp; Vegetables</string>
+    <string name="cat_dairy">Dairy &amp; Eggs</string>
+    <string name="cat_bakery">Bakery</string>
+    <string name="cat_meat">Meat &amp; Seafood</string>
+    <string name="cat_pantry">Pantry</string>
+    <string name="cat_frozen">Frozen</string>
+    <string name="cat_beverages">Beverages</string>
+    <string name="cat_household">Household</string>
+    <string name="cat_snacks">Snacks</string>
+    <string name="cat_other">Other</string>
+
+    <!-- Language names -->
+    <string name="lang_english">English</string>
+    <string name="lang_bangla">বাংলা</string>
 </resources>

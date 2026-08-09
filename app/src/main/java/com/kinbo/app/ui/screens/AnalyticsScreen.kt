@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kinbo.app.data.KinboViewModel
+import com.kinbo.app.util.CurrencyFormatter
 import com.kinbo.app.ui.components.CategoryDot
 import com.kinbo.app.ui.theme.CategoryColors
 
@@ -37,8 +38,8 @@ fun AnalyticsScreen(vm: KinboViewModel, onBack: () -> Unit) {
         LazyColumn(modifier = Modifier.fillMaxSize().padding(inner).background(MaterialTheme.colorScheme.background), contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    MetricCard("Total spent", "$${"%.2f".format(total)}", MaterialTheme.colorScheme.primary, Modifier.weight(1f))
-                    MetricCard("This week", "$${"%.2f".format(weekly.sumOf { it.amount })}", MaterialTheme.colorScheme.tertiary, Modifier.weight(1f))
+                    MetricCard("Total spent", CurrencyFormatter.format(total), MaterialTheme.colorScheme.primary, Modifier.weight(1f))
+                    MetricCard("This week", CurrencyFormatter.format(weekly.sumOf { it.amount }), MaterialTheme.colorScheme.tertiary, Modifier.weight(1f))
                 }
             }
             item {
@@ -64,7 +65,7 @@ fun AnalyticsScreen(vm: KinboViewModel, onBack: () -> Unit) {
                                         CategoryDot(s.category, Modifier.size(10.dp))
                                         Spacer(Modifier.width(8.dp))
                                         Text(s.category.displayName, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
-                                        Text("$${"%.0f".format(s.amount)}", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
+                                        Text(CurrencyFormatter.formatCompact(s.amount), style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.SemiBold)
                                     }
                                 }
                             }

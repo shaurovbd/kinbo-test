@@ -3,6 +3,7 @@ package com.kinbo.app.data
 import android.content.Context
 import android.content.Intent
 import com.kinbo.app.model.ShoppingList
+import com.kinbo.app.util.CurrencyFormatter
 
 object ListShare {
 
@@ -13,14 +14,14 @@ object ListShare {
         } else {
             "${list.purchasedCount}/${list.totalItems} bought"
         }
-        val total = if (list.estimatedTotal > 0) " · Total: \$${"%.2f".format(list.estimatedTotal)}" else ""
+        val total = if (list.estimatedTotal > 0) " · Total: ${CurrencyFormatter.format(list.estimatedTotal)}" else ""
         val items = if (list.items.isEmpty()) {
             "\n(empty)"
         } else {
             list.items.joinToString("\n") { item ->
                 val box = if (item.purchased) "✅" else "⬜"
                 val qty = if (item.quantity != 1.0) " x${item.quantity.trimTrailing()}" else ""
-                val price = if (item.price > 0) " — \$${"%.2f".format(item.price)}" else ""
+                val price = if (item.price > 0) " — ${CurrencyFormatter.format(item.price)}" else ""
                 "$box ${item.name}$qty$price"
             }
         }

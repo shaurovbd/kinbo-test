@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kinbo</string>
+
+    <!-- Common -->
+    <string name="back">পেছনে</string>
+    <string name="save">সংরক্ষণ</string>
+    <string name="cancel">বাতিল</string>
+    <string name="delete">মুছুন</string>
+    <string name="rename">নাম বদলান</string>
+    <string name="done">সম্পন্ন</string>
+    <string name="copy">কপি</string>
+    <string name="new_label">নতুন</string>
+    <string name="next">পরবর্তী</string>
+    <string name="skip">এড়িয়ে যান</string>
+    <string name="get_started">শুরু করুন</string>
+    <string name="see_all">সব দেখুন</string>
+    <string name="share">শেয়ার</string>
+    <string name="favorite">প্রিয়</string>
+    <string name="details">বিস্তারিত</string>
+    <string name="scan">স্ক্যান</string>
+    <string name="voice">ভয়েস</string>
+    <string name="notifications">নোটিফিকেশন</string>
+    <string name="profile">প্রোফাইল</string>
+    <string name="close">বন্ধ</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">হোম</string>
+    <string name="nav_ai">AI</string>
+    <string name="nav_budget">বাজেট</string>
+    <string name="nav_stats">পরিসংখ্যান</string>
+    <string name="nav_settings">সেটিংস</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_shared_lists">শেয়ার্ড শপিং লিস্ট</string>
+    <string name="onboarding_shared_lists_desc">আপনার পুরো পরিবার একসাথে লিস্ট তৈরি ও সম্পাদনা করতে পারে। আর কোনো ডুপ্লিকেট কেনাকাটা বা ভুলে যাওয়া নয়।</string>
+    <string name="onboarding_ai">AI শপিং সহকারী</string>
+    <string name="onboarding_ai_desc">\'মুরগি\' লিখলে Kinbo পেঁয়াজ, রসুন, আদা ইত্যাদি সাজেস্ট করবে — যাতে কোনো উপকরণ মিস না হয়।</string>
+    <string name="onboarding_budget">বাজেট ও পরিসংখ্যান</string>
+    <string name="onboarding_budget_desc">মাসিক কেনাকাটার বাজেট নির্ধারণ করুন, খরচ ট্র্যাক করুন, এবং স্মার্ট চার্টে দেখুন টাকা কোথায় যাচ্ছে।</string>
+    <string name="onboarding_offline">অফলাইন-ফার্স্ট ও নিরাপদ</string>
+    <string name="onboarding_offline_desc">যেকোনো জায়গায় লিস্ট সম্পাদনা করুন — অফলাইনেও। অনলাইনে ফিরলেই পরিবর্তন সিঙ্ক হবে।</string>
+
+    <!-- Auth -->
+    <string name="login_welcome_back">ফিরে এসেছেন</string>
+    <string name="login_subtitle">লিস্ট সিঙ্ক রাখতে সাইন ইন করুন</string>
+    <string name="login_signup_subtitle">একসাথে স্মার্ট কেনাকাটা শুরু করুন</string>
+    <string name="email">ইমেইল</string>
+    <string name="password">পাসওয়ার্ড</string>
+    <string name="full_name">পুরো নাম</string>
+    <string name="sign_in">সাইন ইন</string>
+    <string name="sign_up">সাইন আপ</string>
+    <string name="create_account">অ্যাকাউন্ট তৈরি করুন</string>
+    <string name="forgot_password">পাসওয়ার্ড ভুলে গেছেন?</string>
+    <string name="continue_as_guest">গেস্ট হিসেবে চলুন</string>
+    <string name="have_account">অ্যাকাউন্ট আছে? </string>
+    <string name="no_account">অ্যাকাউন্ট নেই? </string>
+    <string name="google">Google</string>
+    <string name="apple">Apple</string>
+
+    <!-- Home -->
+    <string name="good_day">শুভ দিন 👋</string>
+    <string name="shopping_progress">কেনাকাটার অগ্রগতি</string>
+    <string name="active_lists">সক্রিয় লিস্ট</string>
+    <string name="no_active_lists">কোনো সক্রিয় লিস্ট নেই — সব শেষ! 🎉</string>
+    <string name="recent_lists">সাম্প্রতিক লিস্ট</string>
+    <string name="new_list">নতুন লিস্ট</string>
+    <string name="budget_overview">বাজেট সারাংশ</string>
+    <string name="this_month">এই মাসে</string>
+    <string name="on_track">ট্র্যাকে আছে</string>
+    <string name="over_budget">বাজেট ছাড়িয়েছে</string>
+    <string name="active_lists_count">%1$d টি সক্রিয় লিস্ট</string>
+    <string name="items_count">%1$d টি আইটেম</string>
+    <string name="progress_complete">%1$d%% সম্পন্ন</string>
+
+    <!-- Shopping List -->
+    <string name="add_item">আইটেম যোগ করুন</string>
+    <string name="ai_suggestions">AI সাজেশন</string>
+    <string name="collaborators">সহযোগী</string>
+    <string name="share_list">লিস্ট শেয়ার করুন</string>
+    <string name="rename_list">লিস্টের নাম বদলান</string>
+    <string name="archive">আর্কাইভ</string>
+    <string name="duplicate">ডুপ্লিকেট</string>
+    <string name="list_not_found">লিস্ট পাওয়া যায়নি</string>
+    <string name="sort_by_category">ক্যাটাগরি অনুযায়ী সাজান</string>
+    <string name="pdf">PDF</string>
+    <string name="purchased_of">%2$d এর মধ্যে %1$d টি কেনা হয়েছে</string>
+    <string name="estimated_total">আনুমানিক %1$s</string>
+
+    <!-- Add Item -->
+    <string name="item_name">আইটেমের নাম</string>
+    <string name="qty">পরিমাণ</string>
+    <string name="price">দাম</string>
+    <string name="note_optional">নোট (ঐচ্ছিক)</string>
+
+    <!-- Create List -->
+    <string name="list_name">লিস্টের নাম</string>
+    <string name="eg_weekly_groceries">যেমন: সাপ্তাহিক বাজার</string>
+    <string name="eg_chicken">যেমন: মুরগি</string>
+
+    <!-- Budget -->
+    <string name="budget_planner">বাজেট প্ল্যানার</string>
+    <string name="set_monthly_budget">মাসিক বাজেট নির্ধারণ করুন</string>
+    <string name="spent">খরচ</string>
+    <string name="remaining">অবশিষ্ট</string>
+    <string name="avg_per_visit">প্রতি ভিজিটে গড়</string>
+    <string name="of_budget">%1$s বাজেটের মধ্যে</string>
+
+    <!-- Analytics -->
+    <string name="expense_analytics">খরচের পরিসংখ্যান</string>
+    <string name="total_spent">মোট খরচ</string>
+    <string name="this_week">এই সপ্তাহে</string>
+
+    <!-- AI Assistant -->
+    <string name="ai_assistant">AI সহকারী</string>
+    <string name="try_chicken_pasta">\'মুরগি\' বা \'পাস্তা\' চেষ্টা করুন</string>
+    <string name="send">পাঠান</string>
+
+    <!-- Scanner -->
+    <string name="scan_text">টেক্সট স্ক্যান</string>
+    <string name="add_to_list">লিস্টে যোগ করুন</string>
+    <string name="grant_camera_access">ক্যামেরা অ্যাক্সেস দিন</string>
+    <string name="camera_permission_text">টেক্সট স্ক্যান করতে ক্যামেরা অনুমতি প্রয়োজন</string>
+    <string name="point_at_label">ক্যামেরা পণ্যের নাম বা লেবেলের দিকে তাক করুন</string>
+    <string name="recent_scans">সাম্প্রতিক স্ক্যান</string>
+
+    <!-- Collaborators -->
+    <string name="enter_code">৬-সংখ্যার কোড লিখুন</string>
+    <string name="join_list">লিস্টে যোগ দিন</string>
+    <string name="send_invite">আমন্ত্রণ পাঠান</string>
+    <string name="editor_role">সম্পাদক — আইটেম সম্পাদনা করতে পারে</string>
+    <string name="viewer_role">দর্শক — শুধু দেখতে পারে</string>
+
+    <!-- Notifications -->
+    <string name="mark_all_read">সব পঠিত চিহ্নিত করুন</string>
+
+    <!-- Settings -->
+    <string name="settings">সেটিংস</string>
+    <string name="appearance">অ্যাপিয়ারেন্স</string>
+    <string name="theme">থিম</string>
+    <string name="subscription">সাবস্ক্রিপশন</string>
+    <string name="kinbo_premium">Kinbo প্রিমিয়াম</string>
+    <string name="premium_unlock">উন্নত AI, পরিসংখ্যান ও PDF এক্সপোর্ট আনলক করুন</string>
+    <string name="active">সক্রিয়</string>
+    <string name="preferences">প্রিফারেন্স</string>
+    <string name="smart_notifications">স্মার্ট নোটিফিকেশন</string>
+    <string name="offline_mode">অফলাইন মোড</string>
+    <string name="auto_sync">অটো-সিঙ্ক</string>
+    <string name="language">ভাষা</string>
+    <string name="default_currency">ডিফল্ট মুদ্রা</string>
+    <string name="data">ডেটা</string>
+    <string name="export_pdf">লিস্ট এক্সপোর্ট (PDF)</string>
+    <string name="backup_cloud">ক্লাউডে ব্যাকআপ</string>
+    <string name="clear_cache">ক্যাশ মুছুন</string>
+    <string name="about">সম্পর্কে</string>
+    <string name="help_support">সাহায্য ও সাপোর্ট</string>
+    <string name="privacy_policy">প্রাইভেসি পলিসি</string>
+    <string name="rate_kinbo">Kinbo রেট করুন</string>
+    <string name="version_mvp">Kinbo v1.0.0 MVP</string>
+
+    <!-- Profile -->
+    <string name="lists">লিস্ট</string>
+    <string name="items">আইটেম</string>
+    <string name="bought">কেনা হয়েছে</string>
+
+    <!-- Item categories -->
+    <string name="cat_produce">ফল ও সবজি</string>
+    <string name="cat_dairy">দুগ্ধ ও ডিম</string>
+    <string name="cat_bakery">বেকারি</string>
+    <string name="cat_meat">মাংস ও মাছ</string>
+    <string name="cat_pantry">প্যান্ট্রি</string>
+    <string name="cat_frozen">ফ্রোজেন</string>
+    <string name="cat_beverages">পানীয়</string>
+    <string name="cat_household">গৃহস্থালি</string>
+    <string name="cat_snacks">স্ন্যাকস</string>
+    <string name="cat_other">অন্যান্য</string>
+
+    <!-- Language names -->
+    <string name="lang_english">English</string>
+    <string name="lang_bangla">বাংলা</string>
+</resources>

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.data.ShoppingAssistant
 import com.kinbo.app.model.ShoppingItem
+import com.kinbo.app.util.CurrencyFormatter
 
 private data class ChatMsg(val text: String, val fromUser: Boolean, val suggestions: List<ShoppingItem> = emptyList())
 
@@ -48,7 +49,7 @@ fun AiAssistantScreen(vm: KinboViewModel, onBack: () -> Unit) {
             }
             append("\n💡 Recipe ideas: ${recipes.joinToString(", ")}")
             if (dupes.isNotEmpty()) append("\n⚠️ Duplicate items detected: ${dupes.joinToString(", ")}")
-            append("\n💰 Estimated total bill: $${"%.2f".format(bill)}")
+            append("\n💰 Estimated total bill: ${CurrencyFormatter.format(bill)}")
         }
         messages.add(ChatMsg(reply, false, suggestions))
         input = ""

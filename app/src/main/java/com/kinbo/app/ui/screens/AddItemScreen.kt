@@ -87,7 +87,7 @@ fun AddItemScreen(vm: KinboViewModel, listId: String, onDone: () -> Unit, onBack
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(value = qty, onValueChange = { qty = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("Qty") }, singleLine = true, modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp))
-                OutlinedTextField(value = price, onValueChange = { price = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("Price") }, singleLine = true, modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), prefix = { Text("$") })
+                OutlinedTextField(value = price, onValueChange = { price = it.filter { c -> c.isDigit() || c == '.' } }, label = { Text("Price") }, singleLine = true, modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), prefix = { Text("৳") })
             }
             Spacer(Modifier.height(12.dp))
             Text("Unit", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

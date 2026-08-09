@@ -15,17 +15,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kinbo.app.R
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.ui.theme.ThemeMode
+import com.kinbo.app.util.LocaleManager
 
 @Composable
 fun SettingsScreen(vm: KinboViewModel, onProfile: () -> Unit) {
     val themeMode by vm.themeMode.collectAsState()
     val premium by vm.premium.collectAsState()
     val user by vm.user.collectAsState()
+    val context = LocalContext.current
+    var showLanguageDialog by remember { mutableStateOf(false) }
+    val currentLang = LocaleManager.getCurrentLanguage(context)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
@@ -50,8 +57,8 @@ fun SettingsScreen(vm: KinboViewModel, onProfile: () -> Unit) {
             }
         }
         item {
-            SettingsGroup("Appearance") {
-                Text("Theme", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+            SettingsGroup(stringResource(R.string.appearance)) {
+                Text(stringResource(R.string.theme), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 ThemeMode.entries.forEach { mode ->
                     Row(modifier = Modifier.fillMaxWidth().clickable { vm.setThemeMode(mode) }.padding(horizontal = 16.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(mode.name, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
@@ -61,42 +68,73 @@ fun SettingsScreen(vm: KinboViewModel, onProfile: () -> Unit) {
             }
         }
         item {
-            SettingsGroup("Subscription") {
+            SettingsGroup(stringResource(R.string.subscription)) {
                 Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.WorkspacePremium, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
                     Spacer(Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("Kinbo Premium", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
-                        Text(if (premium) "Active" else "Unlock advanced AI, analytics & PDF export", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(stringResource(R.string.kinbo_premium), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                        Text(if (premium) stringResource(R.string.active) else stringResource(R.string.premium_unlock), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     Switch(checked = premium, onCheckedChange = { vm.setPremium(it) })
                 }
             }
         }
         item {
-            SettingsGroup("Preferences") {
-                ToggleRow("Smart notifications", true)
-                ToggleRow("Offline mode", true)
-                ToggleRow("Auto-sync", true)
-                NavigationRow("Language", "English", {})
-                NavigationRow("Default currency", "USD \$", {})
+            SettingsGroup(stringResource(R.string.preferences)) {
+                ToggleRow(stringResource(R.string.smart_notifications), true)
+                ToggleRow(stringResource(R.string.offline_mode), true)
+                ToggleRow(stringResource(R.string.auto_sync), true)
+                NavigationRow(stringResource(R.string.language), if (currentLang == "bn") stringResource(R.string.lang_bangla) else stringResource(R.string.lang_english)) {
+                    showLanguageDialog = true
+                }
+                NavigationRow(stringResource(R.string.default_currency), "BDT ৳") {}
             }
         }
         item {
-            SettingsGroup("Data") {
-                NavigationRow("Export lists (PDF)", "", {})
-                NavigationRow("Backup to cloud", "", {})
-                NavigationRow("Clear cache", "", {})
+            SettingsGroup(stringResource(R.string.data)) {
+                NavigationRow(stringResource(R.string.export_pdf), "") {}
+                NavigationRow(stringResource(R.string.backup_cloud), "") {}
+                NavigationRow(stringResource(R.string.clear_cache), "") {}
             }
         }
         item {
-            SettingsGroup("About") {
-                NavigationRow("Help & Support", "", {})
-                NavigationRow("Privacy Policy", "", {})
-                NavigationRow("Rate Kinbo", "", {})
-                Text("Kinbo v1.0.0 MVP", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
+            SettingsGroup(stringResource(R.string.about)) {
+                NavigationRow(stringResource(R.string.help_support), "") {}
+                NavigationRow(stringResource(R.string.privacy_policy), "") {}
+                NavigationRow(stringResource(R.string.rate_kinbo), "") {}
+                Text(stringResource(R.string.version_mvp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
             }
         }
+    }
+
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = { Text(stringResource(R.string.language)) },
+            text = {
+                Column {
+                    LocaleManager.supportedLanguages.forEach { (code, name) ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth().clickable {
+                                LocaleManager.setLanguage(context, code)
+                                showLanguageDialog = false
+                            }.padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(name, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+                            RadioButton(selected = currentLang == code, onClick = {
+                                LocaleManager.setLanguage(context, code)
+                                showLanguageDialog = false
+                            })
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) { Text(stringResource(R.string.close)) }
+            },
+        )
     }
 }
 

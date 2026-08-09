@@ -22,7 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.kinbo.app.R
 import com.kinbo.app.data.KinboViewModel
+import com.kinbo.app.util.CurrencyFormatter
 import com.kinbo.app.model.ShoppingList
 import com.kinbo.app.ui.components.AvatarPile
 import com.kinbo.app.ui.components.BudgetBar
@@ -57,10 +60,10 @@ fun HomeScreen(
         item { HeroProgressCard(totalProgress, budget.spent, budget.monthlyLimit, active.size) }
         item { Spacer(Modifier.height(16.dp)) }
 
-        item { SectionHeader("Active Lists", action = "See all", onAction = { onOpenList(recent.firstOrNull()?.id ?: "") }) }
+        item { SectionHeader(stringResource(R.string.active_lists), action = stringResource(R.string.see_all), onAction = { onOpenList(recent.firstOrNull()?.id ?: "") }) }
         item {
             if (active.isEmpty()) {
-                Text("No active lists — you're all caught up! 🎉",
+                Text(stringResource(R.string.no_active_lists),
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
@@ -74,12 +77,12 @@ fun HomeScreen(
 
         item { Spacer(Modifier.height(16.dp)) }
         item {
-            SectionHeader("Budget Overview", action = "Details", onAction = { })
+            SectionHeader(stringResource(R.string.budget_overview), action = stringResource(R.string.details), onAction = { })
             BudgetOverviewCard(budget.spent, budget.monthlyLimit, budget.exceeded)
         }
 
         item { Spacer(Modifier.height(16.dp)) }
-        item { SectionHeader("Recent Lists", action = "New", onAction = onCreateList) }
+        item { SectionHeader(stringResource(R.string.recent_lists), action = stringResource(R.string.new_label), onAction = onCreateList) }
         items(recent.take(5), key = { it.id }) { list ->
             RecentListRow(list = list, onClick = { onOpenList(list.id) }, onFav = { vm.toggleFavorite(list.id) })
         }
@@ -100,12 +103,12 @@ private fun HomeHeader(name: String, initials: String, unread: Int, onProfile: (
         }
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text("Good day 👋", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.good_day), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         }
         IconButton(onClick = onNotifications) {
             BadgedBox(badge = { if (unread > 0) Badge { Text("$unread") } }) {
-                Icon(Icons.Rounded.Notifications, contentDescription = "Notifications")
+                Icon(Icons.Rounded.Notifications, contentDescription = stringResource(R.string.notifications))
             }
         }
     }
@@ -125,12 +128,12 @@ private fun HeroProgressCard(progress: Float, spent: Double, limit: Double, acti
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("Shopping Progress", color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.labelMedium)
-                Text("${(progress * 100).toInt()}% complete", color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.shopping_progress), color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.labelMedium)
+                Text(stringResource(R.string.progress_complete, (progress * 100).toInt()), color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(6.dp))
-                Text("$activeCount active lists", color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f), style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.active_lists_count, activeCount), color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f), style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.height(10.dp))
-                Text("Spent $${"%.2f".format(spent)} of $${"%.0f".format(limit)}", color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.spent) + " ${CurrencyFormatter.format(spent)} / ${CurrencyFormatter.formatCompact(limit)}", color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f), style = MaterialTheme.typography.bodySmall)
             }
             ProgressRing(progress = progress, size = 72, stroke = 8, trackColor = Color.White.copy(alpha = 0.3f), indicatorColor = MaterialTheme.colorScheme.onPrimary)
         }
@@ -157,8 +160,8 @@ private fun ActiveListCard(list: ShoppingList, onClick: () -> Unit) {
                 ProgressRing(progress = list.progress, size = 44, stroke = 5)
                 Spacer(Modifier.width(12.dp))
                 Column {
-                    Text("${list.purchasedCount}/${list.totalItems} items", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-                    Text("$${"%.2f".format(list.estimatedTotal)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.items_count, list.totalItems), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                    Text(CurrencyFormatter.format(list.estimatedTotal), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -176,13 +179,13 @@ private fun BudgetOverviewCard(spent: Double, limit: Double, exceeded: Boolean) 
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("This month", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.this_month), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.weight(1f))
-                Text(if (exceeded) "Over budget" else "On track", style = MaterialTheme.typography.labelSmall, color = if (exceeded) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
+                Text(if (exceeded) stringResource(R.string.over_budget) else stringResource(R.string.on_track), style = MaterialTheme.typography.labelSmall, color = if (exceeded) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
             }
             Spacer(Modifier.height(6.dp))
-            Text("$${"%.2f".format(spent)}", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-            Text("of $${"%.0f".format(limit)} budget", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(CurrencyFormatter.format(spent), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.of_budget, CurrencyFormatter.formatCompact(limit)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(Modifier.height(12.dp))
             BudgetBar(progress = (spent / limit).toFloat(), exceeded = exceeded)
         }
@@ -205,14 +208,14 @@ private fun RecentListRow(list: ShoppingList, onClick: () -> Unit, onFav: () -> 
             Spacer(Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(list.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold, maxLines = 1)
-                Text("${list.totalItems} items · $${"%.2f".format(list.estimatedTotal)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("${list.totalItems} items · ${CurrencyFormatter.format(list.estimatedTotal)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             ProgressRing(progress = list.progress, size = 40, stroke = 4)
             Spacer(Modifier.width(8.dp))
             IconButton(onClick = onFav, modifier = Modifier.size(36.dp)) {
                 Icon(
                     if (list.favorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                    contentDescription = "Favorite",
+                    contentDescription = stringResource(R.string.favorite),
                     tint = if (list.favorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -226,10 +229,10 @@ private fun QuickActionsRow(onCreateList: () -> Unit, onScan: () -> Unit, onShar
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        QuickAction("New List", Icons.Rounded.AddCircle, Modifier.weight(1f), onCreateList)
-        QuickAction("Scan", Icons.Rounded.DocumentScanner, Modifier.weight(1f), onScan)
-        QuickAction("Voice", Icons.Rounded.Mic, Modifier.weight(1f)) {}
-        QuickAction("Share", Icons.Rounded.Share, Modifier.weight(1f), onShare)
+        QuickAction(stringResource(R.string.new_list), Icons.Rounded.AddCircle, Modifier.weight(1f), onCreateList)
+        QuickAction(stringResource(R.string.scan), Icons.Rounded.DocumentScanner, Modifier.weight(1f), onScan)
+        QuickAction(stringResource(R.string.voice), Icons.Rounded.Mic, Modifier.weight(1f)) {}
+        QuickAction(stringResource(R.string.share), Icons.Rounded.Share, Modifier.weight(1f), onShare)
     }
 }
 

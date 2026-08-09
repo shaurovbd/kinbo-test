@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kinbo.app.data.KinboViewModel
+import com.kinbo.app.util.CurrencyFormatter
 import com.kinbo.app.ui.components.BudgetBar
 import com.kinbo.app.ui.components.CategoryDot
 import com.kinbo.app.ui.theme.CategoryColors
@@ -39,14 +40,14 @@ fun BudgetScreen(vm: KinboViewModel, onBack: () -> Unit) {
                 Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text("Monthly Budget", color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.labelMedium)
-                        Text("$${"%.2f".format(budget.monthlyLimit)}", color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.displayMedium, fontWeight = FontWeight.Bold)
+                        Text(CurrencyFormatter.format(budget.monthlyLimit), color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.displayMedium, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(16.dp))
                         BudgetBar(progress = budget.progress, exceeded = budget.exceeded)
                         Spacer(Modifier.height(12.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            StatPill("Spent", "$${"%.2f".format(budget.spent)}", MaterialTheme.colorScheme.onPrimaryContainer)
-                            StatPill("Remaining", "$${"%.2f".format(budget.remaining)}", MaterialTheme.colorScheme.onPrimaryContainer)
-                            StatPill("Avg/visit", "$${"%.2f".format(if (expenses.isEmpty()) 0.0 else budget.spent / expenses.size)}", MaterialTheme.colorScheme.onPrimaryContainer)
+                            StatPill("Spent", CurrencyFormatter.format(budget.spent), MaterialTheme.colorScheme.onPrimaryContainer)
+                            StatPill("Remaining", CurrencyFormatter.format(budget.remaining), MaterialTheme.colorScheme.onPrimaryContainer)
+                            StatPill("Avg/visit", CurrencyFormatter.format(if (expenses.isEmpty()) 0.0 else budget.spent / expenses.size), MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                     }
                 }
@@ -57,7 +58,7 @@ fun BudgetScreen(vm: KinboViewModel, onBack: () -> Unit) {
                     CategoryDot(share.category, Modifier.size(12.dp))
                     Spacer(Modifier.width(10.dp))
                     Text(share.category.displayName, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-                    Text("$${"%.2f".format(share.amount)}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                    Text(CurrencyFormatter.format(share.amount), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                 }
                 val max = categoryShare.maxOfOrNull { it.amount } ?: 1.0
                 Box(modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)).background(MaterialTheme.colorScheme.surfaceVariant)) {
@@ -75,7 +76,7 @@ fun BudgetScreen(vm: KinboViewModel, onBack: () -> Unit) {
                         Text(e.listName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                         Text(e.category.displayName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
-                    Text("$${"%.2f".format(e.amount)}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(CurrencyFormatter.format(e.amount), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -85,7 +86,7 @@ fun BudgetScreen(vm: KinboViewModel, onBack: () -> Unit) {
         AlertDialog(
             onDismissRequest = { editLimit = false },
             title = { Text("Set monthly budget") },
-            text = { OutlinedTextField(value = limitText, onValueChange = { limitText = it.filter { c -> c.isDigit() || c == '.' } }, singleLine = true, prefix = { Text("$") }) },
+            text = { OutlinedTextField(value = limitText, onValueChange = { limitText = it.filter { c -> c.isDigit() || c == '.' } }, singleLine = true, prefix = { Text("৳") }) },
             confirmButton = { TextButton(onClick = { vm.setBudget(limitText.toDoubleOrNull() ?: budget.monthlyLimit); editLimit = false }) { Text("Save") } },
             dismissButton = { TextButton(onClick = { editLimit = false }) { Text("Cancel") } },
         )
