@@ -36,6 +36,8 @@ fun HomeScreen(
     onCreateList: () -> Unit,
     onNotifications: () -> Unit,
     onProfile: () -> Unit,
+    onScan: (String) -> Unit,
+    onShare: (com.kinbo.app.model.ShoppingList) -> Unit,
 ) {
     val user by vm.user.collectAsState()
     val lists by vm.lists.collectAsState()
@@ -83,7 +85,7 @@ fun HomeScreen(
         }
 
         item { Spacer(Modifier.height(20.dp)) }
-        item { QuickActionsRow(onCreateList = onCreateList) }
+        item { QuickActionsRow(onCreateList = onCreateList, onScan = { active.firstOrNull()?.id?.let(onScan) }, onShare = { active.firstOrNull()?.let(onShare) }) }
     }
 }
 
@@ -219,15 +221,15 @@ private fun RecentListRow(list: ShoppingList, onClick: () -> Unit, onFav: () -> 
 }
 
 @Composable
-private fun QuickActionsRow(onCreateList: () -> Unit) {
+private fun QuickActionsRow(onCreateList: () -> Unit, onScan: () -> Unit, onShare: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         QuickAction("New List", Icons.Rounded.AddCircle, Modifier.weight(1f), onCreateList)
-        QuickAction("Scan", Icons.Rounded.QrCodeScanner, Modifier.weight(1f)) {}
+        QuickAction("Scan", Icons.Rounded.QrCodeScanner, Modifier.weight(1f), onScan)
         QuickAction("Voice", Icons.Rounded.Mic, Modifier.weight(1f)) {}
-        QuickAction("Share", Icons.Rounded.Share, Modifier.weight(1f)) {}
+        QuickAction("Share", Icons.Rounded.Share, Modifier.weight(1f), onShare)
     }
 }
 
