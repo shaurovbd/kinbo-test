@@ -18,10 +18,25 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    // Stable signing key — same across all builds and environments so APKs update
+    // in place without uninstalling. Keystore is NOT committed (see .gitignore).
+    signingConfigs {
+        create("kinbo") {
+            storeFile = file("kinbo-release.keystore")
+            storePassword = "kinbo2024"
+            keyAlias = "kinbo"
+            keyPassword = "kinbo2024"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("kinbo")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("kinbo")
         }
     }
 
@@ -63,6 +78,15 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
+    // Camera + QR/barcode scanning
+    implementation("androidx.camera:camera-core:1.3.4")
+    implementation("androidx.camera:camera-camera2:1.3.4")
+    implementation("androidx.camera:camera-lifecycle:1.3.4")
+    implementation("androidx.camera:camera-view:1.3.4")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("com.google.guava:guava:32.1.3-android")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -70,4 +94,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Firebase — real-time collaboration (activates when google-services.json is added).
+    // The app compiles and runs locally without it; FirestoreSyncRepository initializes at runtime.
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
 }

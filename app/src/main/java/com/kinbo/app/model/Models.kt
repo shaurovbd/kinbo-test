@@ -39,6 +39,8 @@ data class Collaborator(
     val role: ListRole,
     val initials: String,
     val colorIndex: Int = 0,
+    val userId: String = "",
+    val email: String = "",
 )
 
 data class ShoppingList(
@@ -51,6 +53,9 @@ data class ShoppingList(
     val collaborators: List<Collaborator> = emptyList(),
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
+    val ownerId: String = "",
+    val shareCode: String = "",
+    val lastModifiedBy: String = "",
 ) {
     val totalItems: Int get() = items.size
     val purchasedCount: Int get() = items.count { it.purchased }

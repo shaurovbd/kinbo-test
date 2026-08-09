@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 
 class KinboViewModel : ViewModel() {
-    private val repo = KinboRepository()
+    private val repo: ListRepository = SyncManager.get()
 
     val user get() = repo.user
     val lists get() = repo.lists
@@ -22,6 +22,7 @@ class KinboViewModel : ViewModel() {
     val weeklySpending get() = repo.weeklySpending
     val favorites get() = repo.favorites
     val premium get() = repo.premium
+    val isSynced get() = repo.isSynced
 
     private val _themeMode = MutableStateFlow(ThemeMode.System)
     val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
@@ -54,4 +55,11 @@ class KinboViewModel : ViewModel() {
     fun login(email: String) = repo.login(email)
     fun signup(name: String, email: String) = repo.signup(name, email)
     fun setPremium(v: Boolean) = repo.setPremium(v)
+
+    // ---- Collaboration ----
+    fun generateShareCode(listId: String): String = repo.generateShareCode(listId)
+    fun joinListByShareCode(shareCode: String): ShoppingList? = repo.joinListByShareCode(shareCode)
+    fun addCollaborator(listId: String, collaborator: com.kinbo.app.model.Collaborator) = repo.addCollaborator(listId, collaborator)
+    fun removeCollaborator(listId: String, userId: String) = repo.removeCollaborator(listId, userId)
+    fun updateCollaboratorRole(listId: String, userId: String, role: com.kinbo.app.model.ListRole) = repo.updateCollaboratorRole(listId, userId, role)
 }

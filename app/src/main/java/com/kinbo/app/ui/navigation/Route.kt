@@ -19,4 +19,10 @@ sealed class Route(val route: String) {
     data object Settings : Route("settings")
     data object Profile : Route("profile")
     data object CreateList : Route("create_list")
+    data object Scanner : Route("scanner/{listId}") {
+        fun create(id: String) = "scanner/$id"
+    }
+    data object Collaborators : Route("collab/{listId}") {
+        fun create(id: String) = "collab/$id"
+    }
 }

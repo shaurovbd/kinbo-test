@@ -33,6 +33,9 @@ fun ShoppingListScreen(
     onBack: () -> Unit,
     onAddItem: () -> Unit,
     onAI: () -> Unit,
+    onScan: () -> Unit,
+    onShare: (com.kinbo.app.model.ShoppingList) -> Unit,
+    onCollab: () -> Unit,
 ) {
     val lists by vm.lists.collectAsState()
     val list = lists.firstOrNull { it.id == listId }
@@ -54,9 +57,13 @@ fun ShoppingListScreen(
                     IconButton(onClick = { vm.toggleFavorite(list.id) }) {
                         Icon(if (list.favorite) Icons.Rounded.Star else Icons.Rounded.StarBorder, contentDescription = "Favorite", tint = if (list.favorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface)
                     }
+                    IconButton(onClick = { onShare(list) }) { Icon(Icons.Rounded.Share, contentDescription = "Share") }
+                    IconButton(onClick = onCollab) { Icon(Icons.Rounded.Group, contentDescription = "Collaborators") }
                     IconButton(onClick = { menuOpen = true }) { Icon(Icons.Rounded.MoreVert, contentDescription = "More") }
                     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                         DropdownMenuItem(text = { Text("Rename") }, onClick = { menuOpen = false; renameOpen = true; renameText = list.name }, leadingIcon = { Icon(Icons.Rounded.Edit, null) })
+                        DropdownMenuItem(text = { Text("Share list") }, onClick = { menuOpen = false; onShare(list) }, leadingIcon = { Icon(Icons.Rounded.Share, null) })
+                        DropdownMenuItem(text = { Text("Collaborators") }, onClick = { menuOpen = false; onCollab() }, leadingIcon = { Icon(Icons.Rounded.Group, null) })
                         DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menuOpen = false; vm.duplicateList(list.id) }, leadingIcon = { Icon(Icons.Rounded.ContentCopy, null) })
                         DropdownMenuItem(text = { Text("Sort by category") }, onClick = { menuOpen = false; vm.sortItemsByCategory(list.id) }, leadingIcon = { Icon(Icons.Rounded.Sort, null) })
                         DropdownMenuItem(text = { Text("Archive") }, onClick = { menuOpen = false; vm.archiveList(list.id); onBack() }, leadingIcon = { Icon(Icons.Rounded.Archive, null) })
@@ -76,7 +83,7 @@ fun ShoppingListScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 AssistChip(onClick = onAI, leadingIcon = { Icon(Icons.Rounded.AutoAwesome, null, modifier = Modifier.size(16.dp)) }, label = { Text("AI Suggestions") })
-                AssistChip(onClick = {}, leadingIcon = { Icon(Icons.Rounded.QrCodeScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text("Scan") })
+                AssistChip(onClick = onScan, leadingIcon = { Icon(Icons.Rounded.QrCodeScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text("Scan") })
                 AssistChip(onClick = {}, leadingIcon = { Icon(Icons.Rounded.PictureAsPdf, null, modifier = Modifier.size(16.dp)) }, label = { Text("PDF") })
             }
             LazyColumn(

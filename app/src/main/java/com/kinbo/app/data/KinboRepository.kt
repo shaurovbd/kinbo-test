@@ -19,25 +19,26 @@ import kotlinx.coroutines.flow.update
 import java.util.UUID
 
 /**
- * In-memory offline-first repository. In production this would be backed by
- * Firebase Firestore per the PRD. Provides mutable state so the UI stays reactive.
+ * In-memory offline-first repository. Always works without a backend.
+ * Implements [ListRepository] so the UI is backend-agnostic.
+ * In production this would be backed by Firebase Firestore per the PRD — see [FirestoreSyncRepository].
  */
-class KinboRepository {
+class KinboRepository : ListRepository {
 
     private val _user = MutableStateFlow(User("Aisha Khan", "aisha@kinbo.app", "AK"))
-    val user: StateFlow<User> = _user.asStateFlow()
+    override val user: StateFlow<User> = _user.asStateFlow()
 
     private val _lists = MutableStateFlow(seedLists())
-    val lists: StateFlow<List<ShoppingList>> = _lists.asStateFlow()
+    override val lists: StateFlow<List<ShoppingList>> = _lists.asStateFlow()
 
     private val _budget = MutableStateFlow(Budget(monthlyLimit = 500.0, spent = 327.40))
-    val budget: StateFlow<Budget> = _budget.asStateFlow()
+    override val budget: StateFlow<Budget> = _budget.asStateFlow()
 
     private val _expenses = MutableStateFlow(seedExpenses())
-    val expenses: StateFlow<List<ExpenseEntry>> = _expenses.asStateFlow()
+    override val expenses: StateFlow<List<ExpenseEntry>> = _expenses.asStateFlow()
 
     private val _notifications = MutableStateFlow(seedNotifications())
-    val notifications: StateFlow<List<KinboNotification>> = _notifications.asStateFlow()
+    override val notifications: StateFlow<List<KinboNotification>> = _notifications.asStateFlow()
 
     private val _weeklySpending = MutableStateFlow(
         listOf(
@@ -47,41 +48,43 @@ class KinboRepository {
             WeeklySpending("Sun", 45.4),
         )
     )
-    val weeklySpending: StateFlow<List<WeeklySpending>> = _weeklySpending.asStateFlow()
+    override val weeklySpending: StateFlow<List<WeeklySpending>> = _weeklySpending.asStateFlow()
 
     private val _favorites = MutableStateFlow(
         listOf("Weekly Groceries", "Monthly Stock", "Ramadan List", "Party List")
     )
-    val favorites: StateFlow<List<String>> = _favorites.asStateFlow()
+    override val favorites: StateFlow<List<String>> = _favorites.asStateFlow()
 
     private val _premium = MutableStateFlow(false)
-    val premium: StateFlow<Boolean> = _premium.asStateFlow()
+    override val premium: StateFlow<Boolean> = _premium.asStateFlow()
 
-    fun categoryShare(): List<CategoryShare> {
+    override val isSynced: Boolean = false
+
+    override fun categoryShare(): List<CategoryShare> {
         val grouped = _expenses.value.groupBy { it.category }.mapValues { it.value.sumOf { e -> e.amount } }
         return grouped.map { CategoryShare(it.key, it.value) }.sortedByDescending { it.amount }
     }
 
-    fun toggleFavorite(id: String) = _lists.update { lists ->
+    override fun toggleFavorite(id: String) = _lists.update { lists ->
         lists.map { if (it.id == id) it.copy(favorite = !it.favorite, updatedAt = System.currentTimeMillis()) else it }
     }
 
-    fun archiveList(id: String) = _lists.update { lists ->
+    override fun archiveList(id: String) = _lists.update { lists ->
         lists.map { if (it.id == id) it.copy(archived = true, updatedAt = System.currentTimeMillis()) else it }
     }
 
-    fun deleteList(id: String) = _lists.update { lists -> lists.filterNot { it.id == id } }
+    override fun deleteList(id: String) = _lists.update { lists -> lists.filterNot { it.id == id } }
 
-    fun duplicateList(id: String) = _lists.update { lists ->
+    override fun duplicateList(id: String) = _lists.update { lists ->
         val src = lists.firstOrNull { it.id == id } ?: return@update lists
         lists + src.copy(id = UUID.randomUUID().toString(), name = "${src.name} (Copy)", createdAt = System.currentTimeMillis())
     }
 
-    fun renameList(id: String, newName: String) = _lists.update { lists ->
+    override fun renameList(id: String, newName: String) = _lists.update { lists ->
         lists.map { if (it.id == id) it.copy(name = newName, updatedAt = System.currentTimeMillis()) else it }
     }
 
-    fun addList(name: String, emoji: String): ShoppingList {
+    override fun addList(name: String, emoji: String): ShoppingList {
         val list = ShoppingList(name = name, emoji = emoji, collaborators = listOf(
             Collaborator(_user.value.name, ListRole.Owner, _user.value.initials, 0)
         ))
@@ -89,25 +92,25 @@ class KinboRepository {
         return list
     }
 
-    fun getList(id: String): ShoppingList? = _lists.value.firstOrNull { it.id == id }
+    override fun getList(id: String): ShoppingList? = _lists.value.firstOrNull { it.id == id }
 
-    fun addItem(listId: String, item: ShoppingItem) = _lists.update { lists ->
+    override fun addItem(listId: String, item: ShoppingItem) = _lists.update { lists ->
         lists.map { if (it.id == listId) it.copy(items = it.items + item, updatedAt = System.currentTimeMillis()) else it }
     }
 
-    fun updateItem(listId: String, item: ShoppingItem) = _lists.update { lists ->
+    override fun updateItem(listId: String, item: ShoppingItem) = _lists.update { lists ->
         lists.map { l ->
             if (l.id == listId) l.copy(items = l.items.map { if (it.id == item.id) item else it }, updatedAt = System.currentTimeMillis()) else l
         }
     }
 
-    fun removeItem(listId: String, itemId: String) = _lists.update { lists ->
+    override fun removeItem(listId: String, itemId: String) = _lists.update { lists ->
         lists.map { l ->
             if (l.id == listId) l.copy(items = l.items.filterNot { it.id == itemId }, updatedAt = System.currentTimeMillis()) else l
         }
     }
 
-    fun togglePurchased(listId: String, itemId: String) = _lists.update { lists ->
+    override fun togglePurchased(listId: String, itemId: String) = _lists.update { lists ->
         lists.map { l ->
             if (l.id == listId) l.copy(
                 items = l.items.map { if (it.id == itemId) it.copy(purchased = !it.purchased) else it },
@@ -116,20 +119,43 @@ class KinboRepository {
         }
     }
 
-    fun sortItemsByCategory(listId: String) = _lists.update { lists ->
+    override fun sortItemsByCategory(listId: String) = _lists.update { lists ->
         lists.map { l -> if (l.id == listId) l.copy(items = ShoppingAssistant.sortByCategory(l.items)) else l }
     }
 
-    fun setBudget(limit: Double) {
+    override fun setBudget(limit: Double) {
         _budget.value = _budget.value.copy(monthlyLimit = limit)
     }
 
-    fun markAllNotificationsRead() = _notifications.update { it.map { n -> n.copy(read = true) } }
+    override fun markAllNotificationsRead() = _notifications.update { it.map { n -> n.copy(read = true) } }
 
-    fun login(email: String) { _user.value = _user.value.copy(email = email, initials = email.take(2).uppercase()) }
-    fun signup(name: String, email: String) { _user.value = User(name, email, name.take(2).uppercase()) }
+    override fun login(email: String) { _user.value = _user.value.copy(email = email, initials = email.take(2).uppercase()) }
+    override fun signup(name: String, email: String) { _user.value = User(name, email, name.take(2).uppercase()) }
 
-    fun setPremium(v: Boolean) { _premium.value = v; _user.value = _user.value.copy(premium = v, plan = if (v) "Premium" else "Free") }
+    override fun setPremium(v: Boolean) { _premium.value = v; _user.value = _user.value.copy(premium = v, plan = if (v) "Premium" else "Free") }
+
+    // ---- Collaboration (local stubs; real sync via FirestoreSyncRepository) ----
+    override fun generateShareCode(listId: String): String {
+        val code = (1..6).map { ('A'..'Z') + ('0'..'9') }.map { it.random() }.joinToString("")
+        _lists.update { lists -> lists.map { if (it.id == listId) it.copy(shareCode = code, updatedAt = System.currentTimeMillis()) else it } }
+        return code
+    }
+
+    override fun joinListByShareCode(shareCode: String): ShoppingList? {
+        return _lists.value.firstOrNull { it.shareCode.equals(shareCode, ignoreCase = true) }
+    }
+
+    override fun addCollaborator(listId: String, collaborator: Collaborator) = _lists.update { lists ->
+        lists.map { if (it.id == listId) it.copy(collaborators = (it.collaborators + collaborator).distinctBy { c -> c.userId.ifEmpty { c.name } }, updatedAt = System.currentTimeMillis()) else it }
+    }
+
+    override fun removeCollaborator(listId: String, userId: String) = _lists.update { lists ->
+        lists.map { if (it.id == listId) it.copy(collaborators = it.collaborators.filterNot { it.userId == userId }, updatedAt = System.currentTimeMillis()) else it }
+    }
+
+    override fun updateCollaboratorRole(listId: String, userId: String, role: ListRole) = _lists.update { lists ->
+        lists.map { if (it.id == listId) it.copy(collaborators = it.collaborators.map { if (it.userId == userId) it.copy(role = role) else it }, updatedAt = System.currentTimeMillis()) else it }
+    }
 
     // ---- Seed data ---------------------------------------------------------
     private fun seedLists(): List<ShoppingList> {

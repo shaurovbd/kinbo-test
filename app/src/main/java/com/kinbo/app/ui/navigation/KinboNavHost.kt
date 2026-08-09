@@ -14,7 +14,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
+import androidx.compose.ui.platform.LocalContext
 import com.kinbo.app.data.KinboViewModel
+import com.kinbo.app.data.ListShare
 import com.kinbo.app.ui.screens.*
 
 @Composable
@@ -22,6 +24,7 @@ fun KinboNavHost(vm: KinboViewModel) {
     val nav = rememberNavController()
     val backStack by nav.currentBackStackEntryAsState()
     val current = backStack?.destination
+    val context = LocalContext.current
 
     val showBottomBar = BottomTab.entries.any { it.route == current?.route } || current?.route == Route.Profile.route
 
@@ -88,6 +91,8 @@ fun KinboNavHost(vm: KinboViewModel) {
                     onCreateList = { nav.navigate(Route.CreateList.route) },
                     onNotifications = { nav.navigate(Route.Notifications.route) },
                     onProfile = { nav.navigate(Route.Profile.route) },
+                    onScan = { listId -> nav.navigate(Route.Scanner.create(listId)) },
+                    onShare = { list -> ListShare.share(context, list) },
                 )
             }
             composable(Route.CreateList.route) {
@@ -99,7 +104,22 @@ fun KinboNavHost(vm: KinboViewModel) {
             }
             composable(Route.ShoppingList.route, arguments = listOf(navArgument("listId") { type = NavType.StringType })) { entry ->
                 val id = entry.arguments?.getString("listId").orEmpty()
-                ShoppingListScreen(vm = vm, listId = id, onBack = { nav.popBackStack() }, onAddItem = { nav.navigate(Route.AddItem.create(id)) }, onAI = { nav.navigate(Route.AiAssistant.route) })
+                ShoppingListScreen(
+                    vm = vm, listId = id, onBack = { nav.popBackStack() },
+                    onAddItem = { nav.navigate(Route.AddItem.create(id)) },
+                    onAI = { nav.navigate(Route.AiAssistant.route) },
+                    onScan = { nav.navigate(Route.Scanner.create(id)) },
+                    onShare = { list -> ListShare.share(context, list) },
+                    onCollab = { nav.navigate(Route.Collaborators.create(id)) },
+                )
+            }
+            composable(Route.Scanner.route, arguments = listOf(navArgument("listId") { type = NavType.StringType })) { entry ->
+                val id = entry.arguments?.getString("listId").orEmpty()
+                ScannerScreen(vm = vm, listId = id, onBack = { nav.popBackStack() })
+            }
+            composable(Route.Collaborators.route, arguments = listOf(navArgument("listId") { type = NavType.StringType })) { entry ->
+                val id = entry.arguments?.getString("listId").orEmpty()
+                CollaboratorScreen(vm = vm, listId = id, onBack = { nav.popBackStack() })
             }
             composable(Route.AddItem.route, arguments = listOf(navArgument("listId") { type = NavType.StringType })) { entry ->
                 val id = entry.arguments?.getString("listId").orEmpty()
