@@ -32,10 +32,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.kinbo.app.data.KinboViewModel
 import com.kinbo.app.model.ShoppingItem
 import java.util.concurrent.Executors
@@ -76,7 +75,7 @@ fun ScannerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Scan barcode") },
+                title = { Text("Scan text") },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back") } },
             )
         },
@@ -109,12 +108,23 @@ fun ScannerScreen(
                                 val analysis = ImageAnalysis.Builder()
                                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                                     .build()
-                                    .also { it.setAnalyzer(analysisExecutor, BarcodeAnalyzer { code ->
-                                        if (detected.none { it == code }) {
-                                            detected.add(0, code)
-                                            if (detected.size > 8) detected.removeAt(detected.lastIndex)
+                                    .also { it.setAnalyzer(analysisExecutor, TextAnalyzer { text ->
+                                        // Clean and dedupe recognized text lines
+                                        val cleaned = text.split('\n')
+                                            .map { it.trim() }
+                                            .filter { it.isNotBlank() && it.length >= 2 }
+                                        if (cleaned.isNotEmpty()) {
+                                            cleaned.forEach { line ->
+                                                if (detected.none { it.equals(line, ignoreCase = true) }) {
+                                                    detected.add(0, line)
+                                                    if (detected.size > 8) detected.removeAt(detected.lastIndex)
+                                                }
+                                            }
+                                            // Auto-fill with the longest recognized line (likely the product name)
+                                            if (manualName.isBlank()) {
+                                                manualName = cleaned.maxByOrNull { it.length } ?: cleaned.first()
+                                            }
                                         }
-                                        if (manualName.isBlank()) manualName = code
                                     }) }
                                 try {
                                     provider.unbindAll()
@@ -140,9 +150,9 @@ fun ScannerScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Icon(Icons.Rounded.QrCodeScanner, null, Modifier.size(64.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.Rounded.DocumentScanner, null, Modifier.size(64.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(12.dp))
-                    Text("Camera permission needed to scan barcodes", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("Camera permission needed to scan text", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.height(16.dp))
                     Button(onClick = { permissionLauncher.launch(Manifest.permission.CAMERA) }) {
                         Text("Grant camera access")
@@ -152,6 +162,12 @@ fun ScannerScreen(
 
             Column(Modifier.padding(horizontal = 16.dp)) {
                 Text("Add to list", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    "Point the camera at a product name or label",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 Spacer(Modifier.height(8.dp))
 
                 OutlinedTextField(
@@ -203,7 +219,7 @@ fun ScannerScreen(
                         AssistChip(
                             onClick = { manualName = code },
                             label = { Text(code, maxLines = 1) },
-                            leadingIcon = { Icon(Icons.Rounded.QrCode, null, Modifier.size(16.dp)) },
+                            leadingIcon = { Icon(Icons.Rounded.TextFields, null, Modifier.size(16.dp)) },
                             modifier = Modifier.padding(vertical = 2.dp),
                         )
                     }
@@ -225,30 +241,18 @@ private fun ScanOverlay(modifier: Modifier = Modifier) {
     }
 }
 
-private class BarcodeAnalyzer(val onDetected: (String) -> Unit) : ImageAnalysis.Analyzer {
-    private val scanner = BarcodeScanning.getClient(
-        BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
-                Barcode.FORMAT_EAN_13,
-                Barcode.FORMAT_EAN_8,
-                Barcode.FORMAT_UPC_A,
-                Barcode.FORMAT_UPC_E,
-                Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_CODE_128,
-                Barcode.FORMAT_CODE_39,
-                Barcode.FORMAT_DATA_MATRIX,
-            )
-            .build()
-    )
+private class TextAnalyzer(val onDetected: (String) -> Unit) : ImageAnalysis.Analyzer {
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            scanner.process(image)
-                .addOnSuccessListener { barcodes ->
-                    barcodes.firstOrNull { !it.rawValue.isNullOrBlank() }?.rawValue?.let(onDetected)
+            recognizer.process(image)
+                .addOnSuccessListener { result ->
+                    val text = result.text.trim()
+                    if (text.isNotBlank()) onDetected(text)
                 }
                 .addOnCompleteListener { imageProxy.close() }
         } else {

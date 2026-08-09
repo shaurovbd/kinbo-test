@@ -227,7 +227,7 @@ private fun QuickActionsRow(onCreateList: () -> Unit, onScan: () -> Unit, onShar
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         QuickAction("New List", Icons.Rounded.AddCircle, Modifier.weight(1f), onCreateList)
-        QuickAction("Scan", Icons.Rounded.QrCodeScanner, Modifier.weight(1f), onScan)
+        QuickAction("Scan", Icons.Rounded.DocumentScanner, Modifier.weight(1f), onScan)
         QuickAction("Voice", Icons.Rounded.Mic, Modifier.weight(1f)) {}
         QuickAction("Share", Icons.Rounded.Share, Modifier.weight(1f), onShare)
     }

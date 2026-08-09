@@ -83,7 +83,7 @@ fun ShoppingListScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 AssistChip(onClick = onAI, leadingIcon = { Icon(Icons.Rounded.AutoAwesome, null, modifier = Modifier.size(16.dp)) }, label = { Text("AI Suggestions") })
-                AssistChip(onClick = onScan, leadingIcon = { Icon(Icons.Rounded.QrCodeScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text("Scan") })
+                AssistChip(onClick = onScan, leadingIcon = { Icon(Icons.Rounded.DocumentScanner, null, modifier = Modifier.size(16.dp)) }, label = { Text("Scan") })
                 AssistChip(onClick = {}, leadingIcon = { Icon(Icons.Rounded.PictureAsPdf, null, modifier = Modifier.size(16.dp)) }, label = { Text("PDF") })
             }
             LazyColumn(
